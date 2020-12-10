@@ -26,7 +26,8 @@ the four in a row before the win sequence
 
 
 class Game {
-  constructor ( HEIGHT, WIDTH ) {
+  constructor (p1, p2, HEIGHT=6, WIDTH=7 ) {
+    this.players = [p1,p2];
     this.WIDTH = WIDTH;
     this.HEIGHT = HEIGHT;
 
@@ -34,13 +35,15 @@ class Game {
     this.COLOR = ["","red", "blue"];
 
 
-    let currPlayer = 1; // active player: 1 or 2
-    this.board = []; // array of rows, each row is array of cells  (board[y][x])
+    this.currPlayer = p1; // active player: 1 or 2
+    
 
-    this.winningFour = [[]];
+    let winningFour = [[]];
 
     this.makeBoard(); //??? Why???
     this.makeHtmlBoard(); //??? Why???
+    // this.placeInTable();
+    this.gameOver = false;
 
 
   }
@@ -52,7 +55,7 @@ class Game {
   //  *    board = array of rows, each row is array of cells  (board[y][x])
   //  */
   makeBoard() {
-  this.board = []; //starts off blank 
+  this.board = []; // // array of rows, each row is array of cells  (board[y][x])
   for (let y = 0; y < this.HEIGHT; y++) {
     this.board.push(Array.from({ length: this.WIDTH }));
   }
@@ -60,40 +63,43 @@ class Game {
 
   /** makeHtmlBoard: make HTML table and row of column this.tops. */
   makeHtmlBoard() {
-    let htmlBoard = document.querySelector("#board");
+    const htmlBoard = document.querySelector("#board");
   
     // TODO: Create this.top row & listener
-    let top = document.createElement("tr");
+    const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
+
+    //HAVE TO BIND HERE SINCE IT IS GOING IN AN INSIDE METHOD
+    this.handleGameClick = this.handleClick.bind(this);
   
-    top.addEventListener("click", () => {
-      handleClick(this.makeHtmlBoard)    //******************ERROR HERE ********** */
-    });  //will I need to bind here? ***************************
+    top.addEventListener("click", this.handleGameClick);    //******************ERROR HERE ********** */
   
-    for (this.x = 0; this.x < this.WIDTH; this.x++) {
-      let headCell = document.createElement("td");
-      headCell.setAttribute("id", this.x);
-      top.append(this.headCell);
+    for (let x = 0; x < this.WIDTH; x++) {
+      const headCell = document.createElement("td");
+      headCell.setAttribute("id", x);
+      top.append(headCell);
     }
-    htmlBoard.append(this.top);
+    htmlBoard.append(top);
   
     // Creates grid
-    for (this.y = 0; this.y < this.HEIGHT; this.y++) {
-      this.row = document.createElement("tr");
-      for (this.x = 0; this.x < this.WIDTH; this.x++) {
-        this.cell = document.createElement("td");
-        this.cell.setAttribute("id", `${this.y}-${this.x}`);
-        this.row.append(this.cell);
+    for ( let y = 0; y < this.HEIGHT; y++) {
+      const row = document.createElement("tr");
+      for (let x = 0; x < this.WIDTH; x++) {
+        const cell = document.createElement("td");
+        cell.setAttribute("id", `${y}-${x}`);
+        row.append(cell);
       }
-      this.htmlBoard.append(this.row);
+      htmlBoard.append(row);
     }
   }
 
 //** findSpotForCol: given column x, return this.top empty y (null if filled) */
-findSpotForCol(x) {
+findSpotForCol(x) { 
   // finds the empty vertical slot for a given x value
-  for (this.y = this.HEIGHT-1; this.y >= 0; this.y--) {
-    if (!this.board[this.y][this.x]) return this.y;
+  for (let y = this.HEIGHT-1; y >= 0; y--) {
+    if (!this.board[y][x]) {
+      return y;
+    }
   }
   return null;
 }
@@ -101,31 +107,33 @@ findSpotForCol(x) {
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
-placeInTable(y, x) {
+  placeInTable(y, x) {
   // Makes a div and inserts into correct table cell
-  this.div = document.createElement("div");
-  this.div.classList.add("piece");
-  this.div.classList.add(`p${this.currPlayer}`);
+  const div = document.createElement("div");
+  div.classList.add("piece");
+  div.classList.add(`p${this.currPlayer}`);
+  //----------------------------------------------- DO COLOR HERE! -------------
   // div.style.backgroundColor = COLOR[currPlayer-1];
-  this.cell = document.getElementById(`${this.y}-${this.x}`);
-  cell.append(this.div);
-  console.log(`p${this.currPlayer} played ${this.y}-${this.x}`);
+  const cell = document.getElementById(`${y}-${x}`);
+  console.log("cell",cell);
+  cell.append(div);
+  console.log(`p${this.currPlayer} played ${y}-${x}`);
 
 }
 
 //functions to check for 4 in a row
 
 getHoriz(y, x) { 
-  [[this.y, this.x], [this.y, this.x + 1], [this.y, this.x + 2], [this.y, this.x + 3]];
+  [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
 }
 getVert(y,x) { 
-  [[this.y, this.x], [this.y + 1, this.x], [this.y + 2, this.x], [this.y + 3, this.x]];
+  [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
 }
 getDiagDR (y,x) {
-  [[this.y, this.x], [this.y + 1, this.x + 1], [this.y + 2, this.x + 2], [this.y + 3, this.x + 3]];
+  [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
 }
 getDiagDL(y,x) {
-  [[this.y, this.x], [this.y + 1, this.x - 1], [this.y + 2, this.x - 2], [this.y + 3, this.x - 3]];
+  [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 }
 
 
@@ -134,11 +142,11 @@ getDiagDL(y,x) {
 endGame(msg) {
 
   //visually highlights the disks that are 4 in a row 
-  for (this.disk = 0; this.disk < 4; this.disk++) {
-    this.y1 = this.winningFour[this.disk][0];
-    this.x1 = this.winningFour[this.disk][1]
-    this.highlight = document.getElementById(`${this.y1}-${this.x1}`);
-    this.highlight.classList.add(`p${this.currPlayer}Win`);
+  for ( let disk = 0; disk < 4; disk++) {
+    y1 = winningFour[disk][0];
+    x1 = winningFour[disk][1]
+    let highlight = document.getElementById(`${y1}-${x1}`);
+    highlight.classList.add(`p${this.currPlayer}Win`);
 
   }
   // Pops up winning alert message
@@ -146,9 +154,9 @@ endGame(msg) {
   //to re-draw the piece which was VERY unsatisfying to the players
   
   setTimeout(() => {
-    this.playAgain = confirm(this.msg);
-    if(this.playAgain) {location.reload()}
-    else (window.location.replace(this.PORTFOLIO));
+    let playAgain = confirm(msg);
+    if(playAgain) {location.reload()}
+    else (window.location.replace(PORTFOLIO));
     
   }, 2);
 }
@@ -159,19 +167,19 @@ endGame(msg) {
 /** handleClick: handle click of column this.top to play piece */
  handleClick(evt) { //---------------------------- ERROR SAYS THIS IS NOT DEFINED - A THIS THING ------
   // get x from ID of clicked cell
-  this.x = +this.evt.target.id;
+  const x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  this.y = this.findSpotForCol(this.x);
-  if (this.y === null) {
+  const y = this.findSpotForCol(x);
+  if (y === null) {
     return;
   }
 
   // place piece in board and add to HTML table
-  placeInTable(this.y, this.x);
+  placeInTable(y, x);
 
   // TODO: add line to update in-memory board
-  this.board[this.y][this.x] = this.currPlayer;
+  this.board[y][x] = this.currPlayer;
 
   // check for win
 
@@ -198,41 +206,41 @@ checkForWin() {
     //  returns true IF ALL are legal coordinates...
     return cells.every(               //**************************BIND?  CALL? **************************** */
       function([y, x]) {
-        this.y >= 0 &&
-        this.y < this.HEIGHT &&
-        this.x >= 0 &&
-        this.x < this.WIDTH &&
+        y >= 0 &&
+        y < this.HEIGHT &&
+        x >= 0 &&
+        x < this.WIDTH &&
         // AND all match currPlayer (all the same color)
-        this.board[this.y][this.x] === this.currPlayer
+        this.board[y][x] === this.currPlayer
       }
     );
   }
 
   //Create all the sequences of 4 on the board and make into arrays of coordinates
-  for (this.y = 0; this.y < this.HEIGHT; this.y++) {
-    for (this.x = 0; this.x < WIDTH; this.x++) {
+  for (y = 0; y < this.HEIGHT; y++) {
+    for (x = 0; x < WIDTH; x++) {
       //for each column (x) check and see if there are 4 in a row horizontally
       //make each check into a 2d array
-      this.horiz = this.getHoriz(this.y, this.x);
+      this.horiz = this.getHoriz(y, x);
       //then vertically
-      this.vert = this.getVert(this.y, this.x);
+      this.vert = this.getVert(y, x);
       
       //then for each diagonal direction
-      this.diagDR = this.getDiagDR(this.y, this.x);
-      this.diagDL = this.getDiagDL(this.y, this.x);
+      this.diagDR = this.getDiagDR(y, x);
+      this.diagDL = this.getDiagDL(y, x);
       
 
 
       //then send through _win to see if any of those are legal sequences of four
       if (this._win(this.horiz) || this._win(this.vert) || this._win(this.diagDR) || this._win(this.diagDL)) {
         if (this._win(this.horiz)) {
-          this.winningFour = this.getHoriz(this.y, this.x);
+          winningFour = this.getHoriz(y, x);
         } else if (this._win(this.vert)){
-          this.winningFour = this.getVert(this.y, this.x);
+          winningFour = this.getVert(y, x);
         } else if (this._win(this.diagDR)){
-          this.winningFour = this.getDiagDR(this.y, this.x)
+          winningFour = this.getDiagDR(y, x)
         } else {
-          this.winningFour = this.getDiagDL(this.y, this.x);
+          winningFour = this.getDiagDL(y, x);
         }
         //return true if a win
         return true;
@@ -247,7 +255,7 @@ checkForWin() {
 
 }
 
-let newGame = new Game(7,8);
+let newGame = new Game(1,2,7,8);
 
 newGame.makeBoard();
 newGame.makeHtmlBoard();
