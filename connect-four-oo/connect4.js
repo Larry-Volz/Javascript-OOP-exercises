@@ -39,7 +39,8 @@ class Game {
 
     this.winningFour = [[]];
 
-    
+    this.makeBoard(); //??? Why???
+    this.makeHtmlBoard(); //??? Why???
 
 
   }
@@ -51,29 +52,30 @@ class Game {
   //  *    board = array of rows, each row is array of cells  (board[y][x])
   //  */
   makeBoard() {
-  for (this.y = 0; this.y < this.HEIGHT; this.y++) {
+  this.board = []; //starts off blank 
+  for (let y = 0; y < this.HEIGHT; y++) {
     this.board.push(Array.from({ length: this.WIDTH }));
   }
 }
 
   /** makeHtmlBoard: make HTML table and row of column this.tops. */
   makeHtmlBoard() {
-    this.htmlBoard = document.querySelector("#board");
+    let htmlBoard = document.querySelector("#board");
   
     // TODO: Create this.top row & listener
-    this.top = document.createElement("tr");
-    this.top.setAttribute("id", "column-top");
+    let top = document.createElement("tr");
+    top.setAttribute("id", "column-top");
   
-    this.top.addEventListener("click", () => {
+    top.addEventListener("click", () => {
       handleClick(this.makeHtmlBoard)    //******************ERROR HERE ********** */
     });  //will I need to bind here? ***************************
   
     for (this.x = 0; this.x < this.WIDTH; this.x++) {
-      this.headCell = document.createElement("td");
-      this.headCell.setAttribute("id", this.x);
-      this.top.append(this.headCell);
+      let headCell = document.createElement("td");
+      headCell.setAttribute("id", this.x);
+      top.append(this.headCell);
     }
-    this.htmlBoard.append(this.top);
+    htmlBoard.append(this.top);
   
     // Creates grid
     for (this.y = 0; this.y < this.HEIGHT; this.y++) {
