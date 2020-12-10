@@ -1,0 +1,88 @@
+body {
+  text-align: center;
+  background-color: #90BAD4;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+/* title */
+h1 {
+  /* display: inline-block; */
+ 
+  font-size: 1.5rem;
+  
+  color: yellow;
+}
+
+#titleGradient {
+  border-radius: 50%;
+  text-align: center;
+  width: 320px;
+  margin: auto;
+  margin-bottom: 8px;
+  padding: 10px;
+  background-image: linear-gradient(to bottom right, #2787f5, #c527f5, red, yellow);
+}
+
+/* game board table  */
+
+table {
+  size: 320px;
+  margin: auto;
+  background-color: white;
+}
+#board td {
+  width: 45px;
+  height: 45px;
+  border: solid 1px #666;
+  
+}
+
+/* pieces are div within game table cells: draw as colored circles */
+
+.piece {
+  /* TODO: make into circles */
+  margin: 5px;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+}
+
+/* TODO: make pieces red/blue,  depending on player 1/2 piece */
+.p1 {
+  background-image: linear-gradient(to bottom right, #ff0329, yellow);
+  
+}
+
+.p1Win {
+  background-image: linear-gradient(to bottom right, yellow, #ff0329);
+}
+
+.p2 {
+  background-image: linear-gradient(to bottom right, #2787f5, #c527f5);
+}
+
+.p2Win {
+  background-image: linear-gradient(to bottom right, #c527f5,  #2787f5)
+}
+
+/* column-top is table row of clickable areas for each column */
+
+#column-top td {
+  border: dashed 1px lightgray;
+}
+
+#column-top td:hover {
+  background-color: gold;
+}
+
+.note {
+  font-style: italic;
+}
+
+.instructions {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
