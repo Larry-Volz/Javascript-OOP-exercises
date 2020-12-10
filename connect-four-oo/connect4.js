@@ -176,7 +176,7 @@ endGame(msg) {
   }
 
   // place piece in board and add to HTML table
-  placeInTable(y, x);
+  this.placeInTable(y, x);
 
   // TODO: add line to update in-memory board
   this.board[y][x] = this.currPlayer;
@@ -217,17 +217,17 @@ checkForWin() {
   }
 
   //Create all the sequences of 4 on the board and make into arrays of coordinates
-  for (y = 0; y < this.HEIGHT; y++) {
-    for (x = 0; x < WIDTH; x++) {
+  for (let y = 0; y < this.HEIGHT; y++) {
+    for (let x = 0; x < this.WIDTH; x++) {
       //for each column (x) check and see if there are 4 in a row horizontally
       //make each check into a 2d array
-      this.horiz = this.getHoriz(y, x);
+      let horiz = getHoriz(y, x);
       //then vertically
-      this.vert = this.getVert(y, x);
+      let vert = getVert(y, x);
       
       //then for each diagonal direction
-      this.diagDR = this.getDiagDR(y, x);
-      this.diagDL = this.getDiagDL(y, x);
+      let diagDR = getDiagDR(y, x);
+      let diagDL = getDiagDL(y, x);
       
 
 
