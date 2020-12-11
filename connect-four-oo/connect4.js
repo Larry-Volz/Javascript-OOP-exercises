@@ -199,45 +199,46 @@ endGame(msg) {
 // /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 checkForWin() {
-  function _win (cells) {  
     // Check four cells to see if they're all color of current player
     // cells: list of four (y, x) cells
 
     //  returns true IF ALL are legal coordinates...
-    return cells.every(               //**************************BIND?  CALL? **************************** */
-      function([y, x]) {
+
+    const _win = cells =>
+    {
+      cells.every( 
+        ([y, x]) =>
         y >= 0 &&
         y < this.HEIGHT &&
         x >= 0 &&
         x < this.WIDTH &&
         // AND all match currPlayer (all the same color)
         this.board[y][x] === this.currPlayer
-      }
     );
-  }
+      }
 
   //Create all the sequences of 4 on the board and make into arrays of coordinates
   for (let y = 0; y < this.HEIGHT; y++) {
     for (let x = 0; x < this.WIDTH; x++) {
       //for each column (x) check and see if there are 4 in a row horizontally
       //make each check into a 2d array
-      let horiz = getHoriz(y, x);
+      let horiz = this.getHoriz(y, x);
       //then vertically
-      let vert = getVert(y, x);
+      let vert = this.getVert(y, x);
       
       //then for each diagonal direction
-      let diagDR = getDiagDR(y, x);
-      let diagDL = getDiagDL(y, x);
+      let diagDR = this.getDiagDR(y, x);
+      let diagDL = this.getDiagDL(y, x);
       
 
 
       //then send through _win to see if any of those are legal sequences of four
-      if (this._win(this.horiz) || this._win(this.vert) || this._win(this.diagDR) || this._win(this.diagDL)) {
-        if (this._win(this.horiz)) {
+      if (_win(horiz) || _win(vert) || _win(this.diagDR) || _win(this.diagDL)) {
+        if (_win(horiz)) {
           winningFour = this.getHoriz(y, x);
-        } else if (this._win(this.vert)){
+        } else if (_win(vert)){
           winningFour = this.getVert(y, x);
-        } else if (this._win(this.diagDR)){
+        } else if (_win(this.diagDR)){
           winningFour = this.getDiagDR(y, x)
         } else {
           winningFour = this.getDiagDL(y, x);
