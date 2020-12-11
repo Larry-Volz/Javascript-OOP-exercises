@@ -153,7 +153,7 @@ class Game {
       let x1 = this.winningFourXYs[disk][1]
       let highlight = document.getElementById(`${y1}-${x1}`);
       highlight.classList.add(`p${this.currPlayer}Win`);
-
+      
     }
     // Pops up winning alert message
     //used setTimeout because the alert was popping up before the screen had the chance
@@ -244,16 +244,17 @@ class Game {
         if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           if (_win(horiz)) {
             console.log("HORIZONTAL WIN")
-            winningFourXYs = this.getHoriz(y, x);
+            this.winningFourXYs = this.getHoriz(y, x);
           } else if (_win(vert)) {
             console.log("VERTICAL WIN")
-            winningFourXYs = this.getVert(y, x);
+            console.log(winningFourXYs);
+            this.winningFourXYs = this.getVert(y, x);
           } else if (_win(diagDR)) {
             console.log("DIAGONAL DR WIN")
-            winningFourXYs = this.getDiagDR(y, x)
+            this.winningFourXYs = this.getDiagDR(y, x)
           } else {
             console.log("DIAGONAL DL WIN")
-            winningFourXYs = this.getDiagDL(y, x);
+            this.winningFourXYs = this.getDiagDL(y, x);
           }
           //return true if a win
           return true;
