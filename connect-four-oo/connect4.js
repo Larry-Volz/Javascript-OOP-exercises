@@ -149,8 +149,8 @@ class Game {
     console.log("MADE IT TO ENDGAME()")
     //visually highlights the disks that are 4 in a row 
     for (let disk = 0; disk < 4; disk++) {
-      y1 = winningFourXYs[disk][0];
-      x1 = winningFourXYs[disk][1]
+      let y1 = this.winningFourXYs[disk][0];
+      let x1 = this.winningFourXYs[disk][1]
       let highlight = document.getElementById(`${y1}-${x1}`);
       highlight.classList.add(`p${this.currPlayer}Win`);
 
@@ -190,7 +190,7 @@ class Game {
     // check for win
 
     if (this.checkForWin()) {
-      return endGame(`${this.COLOR[this.currPlayer].toUpperCase()} Wins!\nWant to play again?`);
+      return this.endGame(`${this.COLOR[this.currPlayer].toUpperCase()} Wins!\nWant to play again?`);
     }
 
     // check for tie
@@ -209,10 +209,11 @@ class Game {
     // cells: list of four (y, x) cells
 
     //  returns true IF ALL are legal coordinates...
-    
+    let winningFourXYs;
+
     const _win = cells => {
       
-      cells.every(
+      let test = cells.every(
         ([y, x]) =>
           y >= 0 &&
           y < this.HEIGHT &&
@@ -221,6 +222,8 @@ class Game {
           // AND all match currPlayer (all the same color)
           this.board[y][x] === this.currPlayer
       );
+      console.log(test)
+      return test;
     }
 
     //Create all the sequences of 4 on the board and make into arrays of coordinates
