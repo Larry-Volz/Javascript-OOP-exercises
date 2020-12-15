@@ -307,8 +307,8 @@ class Game {
 
 }
 
-document.getElementById("play-btn").addEventListener("click", ()=>{
- 
+document.getElementById("play-btn").addEventListener("click", (evt)=>{
+  evt.preventDefault();
 
   //retrieve input data to pass to Game()
   const color1 = document.getElementById("player1-color").value;
@@ -318,10 +318,10 @@ document.getElementById("play-btn").addEventListener("click", ()=>{
 
   const player1 = new Player(1,color1);
   const player2 = new Player(2,color2)
-  setTimeout(()=>{
-    let newGame = new Game(player1, player2, numRows, numCols);
-    document.getElementById("player-options").style.display="none";
-  }, 50);
+  
+  let newGame = new Game(player1, player2, numRows, numCols);
+  document.getElementById("player-options").style.display="none";
+
   
     
 
