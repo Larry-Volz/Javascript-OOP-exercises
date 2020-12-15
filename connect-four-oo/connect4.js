@@ -26,17 +26,27 @@ the four in a row before the win sequence
 
 
  class player {
-   constructor(ID, NAME, COLOR){
-     this.NAME = NAME;
+   constructor(ID, COLOR){
+    //  this.NAME = NAME;
      this. COLOR = COLOR;
      this.turn = turn;
     this.ID = ID;
+    this.color1;
+    this.color2;
    }
    getTurn(ID)  {
      return this.turn;
    }
    setTurn(ID, tOrF) {
       this.turn = tOrF;
+   }
+   getColor1(ID){
+     color1 = COLOR.slice(0,7);
+     return this.color1;
+   }
+   getColor2(ID){
+    color2 = COLOR.slice(7,13);
+     return this.color2;
    }
  }
 
@@ -287,9 +297,8 @@ class Game {
 }
 
 let newGame = new Game(1, 2, 7, 8);
-
-newGame.makeBoard();
-newGame.makeHtmlBoard();
+// newGame.makeBoard();
+// newGame.makeHtmlBoard();
 
 
 

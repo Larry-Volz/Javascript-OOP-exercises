@@ -2,8 +2,8 @@
 <head>
   <title>Connect 4</title>
   <link href="connect4.css" rel="stylesheet">
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
 <!-- code pen for title text thanks to https://codepen.io/cesar2535 -->
 
 </head>
@@ -11,6 +11,52 @@
   <div id="titleGradient">
 <h1>Drip Drop Tic Toc Tac Toe!*</h1>
 </div>
+
+<div id="player-options">
+  <form action="#" id="player-form">
+    <label for = "player1-color">Player 1 pick a color</label>
+      <select id="player1-color" name = "player1-color">
+        <option value="#ff0329-#FFFF00">sunrise</option>
+        <option value="#ed4264-#ffedbc">peach</option>
+        <option value="#ffafbd-#ffc3a0">pink rose</option>
+        <option value="#42275a-#734b6d">mauve</option>
+      </select>
+      <br>
+    <label for = "player2-color">Player 2 pick a color</label>
+      <select id="player2-color" name = "player2-color">
+        <option value="#56ab2f#a-8e063">lime</option>
+        <option value="#000428-#004e92">frost</option>
+        <option value="#4568dc-#b06ab3">purples</option>
+        <option value="#bdc3c7-#2c3e50">greys</option>
+      </select>
+      <br>
+    <label for = "num-cols"># of columns</label>
+      <select id="num-cols" name = "num-cols">
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10>10</option>
+        <option value=11>11</option>
+        <option value=11>12</option>
+      </select>
+      <br>
+    <label for = "num-rows"># of rows</label>
+      <select id="num-rows" name = "num-rows">
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10>10</option>
+        <option value=11>11</option>
+        <option value=11>12</option>
+      </select> 
+      <br><br>
+      <button id="play-btn">PLAY!</button>
+  </form>
+  <br>
+</div>
+
 <div id="game">
   <table id="board"></table>
 </div>
