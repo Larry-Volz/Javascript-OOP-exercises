@@ -125,8 +125,13 @@ class Game {
         row.append(cell);
       }
       htmlBoard.append(row);
+
+      //animate appearance of board
+  $("#board").css("display","block");
     }
   }
+
+  
 
   //** findSpotForCol: given column x, return this.top empty y (null if filled) */
   findSpotForCol(x) {
@@ -319,10 +324,16 @@ document.getElementById("play-btn").addEventListener("click", (evt)=>{
   const player1 = new Player(1,color1);
   const player2 = new Player(2,color2)
   
-  let newGame = new Game(player1, player2, numRows, numCols);
-  document.getElementById("player-options").style.display="none";
-
   
+  // document.getElementById("player-options").style.display="none";
+  $("#vanish-me").animate({
+    width: 0,
+    height:0
+  },1500, ()=>{
+    $("#vanish-me").css("display","none")
+  });
+
+  let newGame = new Game(player1, player2, numRows, numCols);
     
 
   
