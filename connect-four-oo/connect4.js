@@ -25,34 +25,38 @@ the four in a row before the win sequence
  */
 
 
- class player {
+ class Player {
    constructor(ID, COLOR){
     //  this.NAME = NAME;
-     this. COLOR = COLOR;
-     this.turn = turn;
+    this. COLOR = COLOR;
+    this.turn;
     this.ID = ID;
     this.color1;
     this.color2;
    }
-   getTurn(ID)  {
+   getTurn()  {
      return this.turn;
    }
-   setTurn(ID, tOrF) {
+   setTurn(tOrF) {
       this.turn = tOrF;
    }
-   getColor1(ID){
-     color1 = COLOR.slice(0,7);
-     return this.color1;
+   getColorSelector(){
+     return this.COLOR;
    }
-   getColor2(ID){
-    color2 = COLOR.slice(7,13);
-     return this.color2;
+
+   getID(){
+     return this.ID;
    }
+   
  }
 
 class Game {
   constructor(p1, p2, HEIGHT = 6, WIDTH = 7) {
-    this.players = [p1, p2];
+    
+    //p1 & p2 are now objects with methods to get colors and who is playing
+    this.p1 = p1
+    this.p2 = p2
+
     this.WIDTH = WIDTH;
     this.HEIGHT = HEIGHT;
 
@@ -61,7 +65,7 @@ class Game {
     this.COLOR = ["", "red", "blue"]; //???TODO
 
 
-    this.currPlayer = p1; // active player: 1 or 2
+    this.currPlayer = p1; // active player: 1 or 2  ??? use get method?
 
 
     this.winningFourXYs = [[]];
@@ -139,16 +143,21 @@ class Game {
   /** placeInTable: update DOM to place piece into HTML table of board */
 
   placeInTable(y, x) {
+    let clr;
     // Makes a div and inserts into correct table cell
     const div = document.createElement("div");
     div.classList.add("piece");
-    div.classList.add(`p${this.currPlayer}`);
+    //updated way of setting color
+    clr = this.currPlayer.getColorSelector();
+    console.log("color",clr)
+    div.classList.add(`${clr}`);
+    // div.style.backgroundImage = `linear-gradient(to bottom right, ${this.currPlayer.color1}, ${this.currPlayer.color2});`
     //----------------------------------------------- DO COLOR HERE! -------------
     // div.style.backgroundColor = COLOR[currPlayer-1];
     const cell = document.getElementById(`${y}-${x}`);
     // console.log("cell", cell);
     cell.append(div); //places piece in the form of a div inside a td
-    console.log(`p${this.currPlayer} played ${y}-${x}`);
+    console.log(`p${this.currPlayer.getID()} played ${y}-${x}`);
 
   }
 
@@ -177,7 +186,7 @@ class Game {
       let y1 = this.winningFourXYs[disk][0];
       let x1 = this.winningFourXYs[disk][1]
       let highlight = document.getElementById(`${y1}-${x1}`);
-      highlight.classList.add(`p${this.currPlayer}Win`);
+      highlight.classList.add(`p${this.currPlayer.getID()}Win`);
       
     }
     // Pops up winning alert message
@@ -210,12 +219,13 @@ class Game {
     this.placeInTable(y, x);
 
     // TODO: add line to update in-memory board
-    this.board[y][x] = this.currPlayer;
+    this.board[y][x] = this.currPlayer.getID();
 
     // check for win
 
     if (this.checkForWin()) {
-      return this.endGame(`${this.COLOR[this.currPlayer].toUpperCase()} Wins!\nWant to play again?`);
+      let winner = this.currPlayer.getColorSelector();
+      return this.endGame(`${winner.toUpperCase()} Wins!\nWant to play again?`);
     }
 
     // check for tie
@@ -226,7 +236,7 @@ class Game {
 
     // switch players
     // currPlayer 1 <-> 2
-    if (this.currPlayer === 1) { this.currPlayer = 2 } else { this.currPlayer = 1 };
+    if (this.currPlayer.getID() === 1) { this.currPlayer = this.p2 } else { this.currPlayer = this.p1 };
   }
 
   // /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -241,17 +251,18 @@ class Game {
     const _win = cells => {
       
       let test = cells.every(
-        ([y, x]) =>
+        ([y, x]) => 
           y >= 0 &&
           y < this.HEIGHT &&
           x >= 0 &&
           x < this.WIDTH &&
           // AND all match currPlayer (all the same color)
-          this.board[y][x] === this.currPlayer
+          this.board[y][x] === this.currPlayer.getID()
       );
-      console.log(test)
+      // console.log(test)
       return test;
     }
+  
 
     //Create all the sequences of 4 on the board and make into arrays of coordinates
     for (let y = 0; y < this.HEIGHT; y++) {
@@ -296,7 +307,30 @@ class Game {
 
 }
 
-let newGame = new Game(1, 2, 7, 8);
+document.getElementById("play-btn").addEventListener("click", ()=>{
+ 
+
+  //retrieve input data to pass to Game()
+  const color1 = document.getElementById("player1-color").value;
+  const color2 = document.getElementById("player2-color").value;
+  const numCols = document.getElementById("num-cols").value;
+  const numRows = document.getElementById("num-rows").value;
+
+  const player1 = new Player(1,color1);
+  const player2 = new Player(2,color2)
+  setTimeout(()=>{
+    let newGame = new Game(player1, player2, numRows, numCols);
+    document.getElementById("player-options").style.display="none";
+  }, 50);
+  
+    
+
+  
+  //start game
+   //hide set-up options
+  
+})
+
 // newGame.makeBoard();
 // newGame.makeHtmlBoard();
 

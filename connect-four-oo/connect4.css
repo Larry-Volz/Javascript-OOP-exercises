@@ -49,17 +49,41 @@ table {
 }
 
 /* TODO: make pieces red/blue,  depending on player 1/2 piece */
-.p1 {
-  background-image: linear-gradient(to bottom right, #ff0329, yellow);
-  
+
+.peach{
+  background-image: linear-gradient(to bottom right, #ed4264, #ffedbc);
+}
+
+.mauve{
+  background-image: linear-gradient(to bottom right, #42275a, #734b6d);
+}
+
+.sunrise {
+  background-image: linear-gradient(to bottom right, #ff0329, #FFFF00);
+}
+
+.pink-rose {
+  background-image: linear-gradient(to bottom right, #ffafbd, #ffc3a0);
+}
+
+.lime {
+  background-image: linear-gradient(to bottom right, #56ab2f, #a8e063);
+}
+
+.frost {
+  background-image: linear-gradient(to bottom right, #000428, #004e92);
+}
+
+.purples {
+  background-image: linear-gradient(to bottom right, #2787f5, #c527f5);
+}
+
+.greys {
+  background-image: linear-gradient(to bottom right, #bdc3c7, #2c3e50);
 }
 
 .p1Win {
   background-image: linear-gradient(to bottom right, yellow, #ff0329);
-}
-
-.p2 {
-  background-image: linear-gradient(to bottom right, #2787f5, #c527f5);
 }
 
 .p2Win {
