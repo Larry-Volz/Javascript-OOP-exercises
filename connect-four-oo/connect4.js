@@ -25,6 +25,21 @@ the four in a row before the win sequence
  */
 
 
+ class player {
+   constructor(ID, NAME, COLOR){
+     this.NAME = NAME;
+     this. COLOR = COLOR;
+     this.turn = turn;
+    this.ID = ID;
+   }
+   getTurn(ID)  {
+     return this.turn;
+   }
+   setTurn(ID, tOrF) {
+      this.turn = tOrF;
+   }
+ }
+
 class Game {
   constructor(p1, p2, HEIGHT = 6, WIDTH = 7) {
     this.players = [p1, p2];
@@ -195,7 +210,9 @@ class Game {
 
     // check for tie
     // TODO: check if all cells in board are filled; if so call, call endGame ******************************
-
+    if (this.board.every(row => row.every(cell => cell))) {
+      return this.endGame('Tie!');
+    }
 
     // switch players
     // currPlayer 1 <-> 2
